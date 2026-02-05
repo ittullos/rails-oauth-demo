@@ -1,20 +1,74 @@
 class AuthController < ApplicationController
   def callback
-    # Extract user information from OAuth response
+    # Extract the full OAuth response from Omniauth
     auth_info = request.env["omniauth.auth"]
+    
+    # Verify the response exists
+    unless auth_info
+      redirect_to root_path, alert: "Authentication failed: No auth info received"
+      return
+    end
 
-    # Store user information in session
+    # Extract credentials (includes ID token, access token, etc.)
+    credentials = auth_info["credentials"]
+    id_token = credentials&.dig("id_token")
+    access_token = credentials&.dig("token")
+    
+    # Extract user info from Auth0 response
+    user_info = auth_info["info"] || {}
+    extra_info = auth_info["extra"] || {}
+    
+    # Extract additional claims from the raw_info (ID token claims)
+    raw_info = extra_info["raw_info"] || {}
+    
+    # Store comprehensive user information in session
     session[:user_info] = {
+      # Basic OAuth info
       uid: auth_info["uid"],
-      name: auth_info["info"]["name"],
-      email: auth_info["info"]["email"],
-      nickname: auth_info["info"]["nickname"],
-      picture: auth_info["info"]["image"],
-      provider: auth_info["provider"]
+      provider: auth_info["provider"],
+      
+      # User profile information
+      name: user_info["name"],
+      email: user_info["email"],
+      nickname: user_info["nickname"],
+      picture: user_info["image"],
+      
+      # ID Token claims (additional Auth0 user metadata)
+      given_name: raw_info["given_name"],
+      family_name: raw_info["family_name"],
+      locale: raw_info["locale"],
+      email_verified: raw_info["email_verified"],
+      updated_at: raw_info["updated_at"],
+      
+      # Authentication metadata
+      sub: raw_info["sub"], # Auth0 user ID
+      aud: raw_info["aud"], # Audience (your client ID)
+      iss: raw_info["iss"], # Issuer (Auth0 domain)
+      iat: raw_info["iat"], # Issued at timestamp
+      exp: raw_info["exp"],  # Expiration timestamp
+      
+      # Store token info securely - use ISO string for proper serialization
+      authenticated_at: Time.current.iso8601,
+      session_id: session.id
     }
-
+    
+    # Store tokens securely (optional - be careful with token storage)
+    session[:tokens] = {
+      id_token_present: id_token.present?,
+      access_token_present: access_token.present?,
+      token_type: credentials&.dig("token_type"),
+      expires_at: credentials&.dig("expires_at")
+    }
+    
+    Rails.logger.info "User #{session[:user_info][:email]} authenticated successfully"
+    
     # Redirect to protected page or where they came from
-    redirect_to protected_path, notice: "Successfully authenticated!"
+    redirect_path = session.delete(:redirect_after_login) || protected_path
+    redirect_to redirect_path, notice: "Successfully authenticated!"
+    
+  rescue => e
+    Rails.logger.error "Authentication callback error: #{e.message}"
+    redirect_to root_path, alert: "Authentication failed. Please try again."
   end
 
   def login
