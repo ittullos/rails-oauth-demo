@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   def current_user
     session[:user_info] if user_signed_in?
   end
-  
+
   def current_tokens
     session[:tokens] if user_signed_in?
   end
@@ -21,14 +21,14 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
-  
+
   def session_valid?
     return false unless session[:user_info].present?
-    
+
     # Check if session has expired (optional security measure)
-    authenticated_at = session[:user_info]['authenticated_at']
+    authenticated_at = session[:user_info]["authenticated_at"]
     return false unless authenticated_at
-    
+
     # Sessions expire after 24 hours
     session_age = Time.current - Time.parse(authenticated_at.to_s)
     session_age < 24.hours

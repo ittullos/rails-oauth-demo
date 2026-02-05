@@ -11,6 +11,42 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 - Protected routes
 - User profile display
 
+## Why PKCE is Critical for Security
+
+**PKCE (Proof Key for Code Exchange)** is a security extension to OAuth 2.0 that prevents authorization code interception attacks. It's especially important for public clients like web applications.
+
+### The Security Problem PKCE Solves
+
+**Traditional OAuth 2.0 Vulnerability:**
+1. User initiates login → redirected to Auth0
+2. Auth0 redirects back with authorization code in URL: `http://localhost:3000/callback?code=ABC123`
+3. **Attack Vector**: Malicious app could intercept this code from:
+   - Browser history
+   - Referer headers
+   - Network traffic
+   - Malicious browser extensions
+4. Attacker exchanges stolen code for access tokens
+
+### How PKCE Prevents This Attack
+
+**PKCE Flow:**
+1. **Code Verifier**: App generates random 43-128 character string
+2. **Code Challenge**: Creates SHA256 hash of verifier
+3. **Authorization Request**: Sends challenge (not verifier) to Auth0
+4. **Authorization Code**: Auth0 returns code as usual
+5. **Token Exchange**: App sends BOTH code AND original verifier
+6. **Verification**: Auth0 verifies verifier matches challenge
+
+**Security Benefit**: Even if authorization code is stolen, attacker cannot exchange it for tokens without the original code verifier, which never leaves the client application.
+
+### Why It's Essential for Web Applications
+
+- **Public Clients**: Web apps can't securely store client secrets
+- **Browser Environment**: URLs can be intercepted through various vectors
+- **Zero Additional Complexity**: PKCE is handled automatically by Auth0
+- **Industry Standard**: Recommended by OAuth 2.1 specification
+- **No Performance Impact**: Minimal overhead, maximum security
+
 ## Setup Instructions
 
 ### 1. Auth0 Configuration
@@ -87,10 +123,15 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 
 - **Security Features:**
 
-  - PKCE implementation through Auth0
-  - Session-based authentication
-  - CSRF protection
-  - Secure logout with Auth0
+  - **PKCE (Proof Key for Code Exchange)**: Prevents authorization code interception attacks
+    - Automatically generates code verifier/challenge pairs
+    - Verifies token exchanges with cryptographic proof
+    - Protects against malicious apps and network attacks
+  - **Session-based authentication**: Secure server-side session management
+  - **CSRF protection**: Prevents cross-site request forgery
+  - **Secure logout**: Complete session cleanup with Auth0
+  - **Session expiration**: Automatic timeout after 24 hours
+  - **Token security**: No sensitive tokens stored in browser
 
 - **Architecture:**
   - `AuthController` - Handles OAuth callbacks and authentication flow
@@ -98,18 +139,25 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
   - `ProtectedController` - Demonstrates protected routes
   - Session-based user state management
 
-* Configuration
+## Security Best Practices Implemented
 
-* Database creation
+1. **PKCE Flow**: All OAuth requests use PKCE for maximum security
+2. **No Client Secret Exposure**: Secrets safely stored in environment variables
+3. **Session Security**: Server-side sessions with automatic expiration
+4. **Secure Redirects**: Validated callback URLs prevent open redirects
+5. **HTTPS Ready**: Production configuration supports secure transport
+6. **Token Isolation**: Access tokens never exposed to browser JavaScript
+## Security Best Practices Implemented
 
-* Database initialization
+1. **PKCE Flow**: All OAuth requests use PKCE for maximum security
+2. **No Client Secret Exposure**: Secrets safely stored in environment variables
+3. **Session Security**: Server-side sessions with automatic expiration
+4. **Secure Redirects**: Validated callback URLs prevent open redirects
+5. **HTTPS Ready**: Production configuration supports secure transport
+6. **Token Isolation**: Access tokens never exposed to browser JavaScript
 
-* How to run the test suite
+## References
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-# rails-oauth-demo
+- [RFC 7636 - Proof Key for Code Exchange](https://tools.ietf.org/html/rfc7636)
+- [Auth0 PKCE Documentation](https://auth0.com/docs/authorization/flows/authorization-code-flow-with-pkce)
+- [OAuth 2.0 Security Best Practices](https://tools.ietf.org/html/draft-ietf-oauth-security-topics)

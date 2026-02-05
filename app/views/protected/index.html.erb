@@ -8,64 +8,21 @@
       <% if current_user['picture'] %>
         <img src="<%= current_user['picture'] %>" alt="Profile" class="profile-pic-large">
       <% end %>
-      <p><strong>Name:</strong> <%= current_user['name'] || 'Not provided' %></p>
-      <p><strong>Given Name:</strong> <%= current_user['given_name'] || 'Not provided' %></p>
-      <p><strong>Family Name:</strong> <%= current_user['family_name'] || 'Not provided' %></p>
+      <p><strong>Name:</strong> <%= current_user['name'] || current_user['nickname'] || 'Not provided' %></p>
       <p><strong>Email:</strong> <%= current_user['email'] || 'Not provided' %></p>
-      <p><strong>Email Verified:</strong> <%= current_user['email_verified'] ? 'Yes' : 'No' %></p>
-      <p><strong>Nickname:</strong> <%= current_user['nickname'] || 'Not provided' %></p>
-      <p><strong>Locale:</strong> <%= current_user['locale'] || 'Not provided' %></p>
-    </div>
-  </div>
-  
-  <div class="user-info">
-    <h3>ID Token Claims:</h3>
-    <div class="user-details">
-      <p><strong>Subject (Sub):</strong> <%= current_user['sub'] %></p>
-      <p><strong>User ID (UID):</strong> <%= current_user['uid'] %></p>
-      <p><strong>Provider:</strong> <%= current_user['provider']&.capitalize %></p>
-      <p><strong>Audience (aud):</strong> <%= current_user['aud'] %></p>
-      <p><strong>Issuer (iss):</strong> <%= current_user['iss'] %></p>
-      <% if current_user['iat'] %>
-        <p><strong>Issued At:</strong> <%= Time.at(current_user['iat']).strftime('%Y-%m-%d %H:%M:%S UTC') rescue 'Invalid time' %></p>
-      <% end %>
-      <% if current_user['exp'] %>
-        <p><strong>Expires At:</strong> <%= Time.at(current_user['exp']).strftime('%Y-%m-%d %H:%M:%S UTC') rescue 'Invalid time' %></p>
-      <% end %>
-      <p><strong>Last Updated:</strong> <%= current_user['updated_at'] || 'Not provided' %></p>
+      <p><strong>Email Verified:</strong> <%= current_user['email_verified'] ? '✅ Yes' : '❌ No' %></p>
+      <p><strong>User ID:</strong> <%= current_user['sub'] || current_user['uid'] %></p>
       <% if current_user['authenticated_at'] %>
-        <p><strong>Authenticated At:</strong> <%= 
+        <p><strong>Logged in at:</strong> <%= 
           begin
             Time.parse(current_user['authenticated_at'].to_s).strftime('%Y-%m-%d %H:%M:%S %Z')
           rescue
             current_user['authenticated_at']
           end
         %></p>
-      <% else %>
-        <p><strong>Authenticated At:</strong> Not provided</p>
       <% end %>
     </div>
   </div>
-  
-  <% if current_tokens %>
-    <div class="user-info">
-      <h3>Token Information:</h3>
-      <div class="user-details">
-        <p><strong>ID Token Present:</strong> <%= current_tokens['id_token_present'] ? 'Yes' : 'No' %></p>
-        <p><strong>Access Token Present:</strong> <%= current_tokens['access_token_present'] ? 'Yes' : 'No' %></p>
-        <p><strong>Token Type:</strong> <%= current_tokens['token_type'] || 'Not provided' %></p>
-        <% if current_tokens['expires_at'] %>
-          <p><strong>Token Expires At:</strong> <%= 
-            begin
-              Time.at(current_tokens['expires_at']).strftime('%Y-%m-%d %H:%M:%S UTC')
-            rescue
-              current_tokens['expires_at']
-            end
-          %></p>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
   
   <div class="actions">
     <%= link_to "← Back to Home", root_path, class: "btn btn-secondary" %>
