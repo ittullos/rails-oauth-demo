@@ -5,6 +5,12 @@ Rails.application.routes.draw do
 
   # Protected page
   get "protected", to: "protected#index"
+  
+  # Authentication routes
+  get "login", to: "auth#login"
+  get "logout", to: "auth#logout"
+  get "/auth/:provider/callback", to: "auth#callback"
+  get "/auth/failure", to: "auth#failure"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

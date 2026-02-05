@@ -2,10 +2,24 @@
   <h1>Welcome to Rails OAuth Demo</h1>
   <p>This is a demonstration of OAuth 2.0 Authorization Code Flow with PKCE using Auth0.</p>
   
-  <div class="actions">
-    <%= link_to "Login", "#", class: "btn btn-primary" %>
-    <%= link_to "View Protected Page", protected_path, class: "btn btn-secondary" %>
-  </div>
+  <% if user_signed_in? %>
+    <div class="user-welcome">
+      <p>Hello, <%= current_user['name'] || current_user['email'] %>! 👋</p>
+      <% if current_user['picture'] %>
+        <img src="<%= current_user['picture'] %>" alt="Profile" class="profile-pic">
+      <% end %>
+    </div>
+    
+    <div class="actions">
+      <%= link_to "View Protected Page", protected_path, class: "btn btn-primary" %>
+      <%= link_to "Logout", logout_path, class: "btn btn-danger" %>
+    </div>
+  <% else %>
+    <div class="actions">
+      <%= link_to "Login with Auth0", login_path, class: "btn btn-primary" %>
+      <%= link_to "View Protected Page", protected_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
 </div>
 
 <div class="features">

@@ -1,0 +1,18 @@
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider(
+    :auth0,
+    ENV['AUTH0_CLIENT_ID'],
+    ENV['AUTH0_CLIENT_SECRET'],
+    ENV['AUTH0_DOMAIN'],
+    callback_path: '/auth/auth0/callback',
+    authorize_params: {
+      scope: 'openid email profile'
+    },
+    token_params: {
+      scope: 'openid email profile'
+    }
+  )
+end
+
+# Enable PKCE for additional security
+OmniAuth.config.allowed_request_methods = [:post, :get]
