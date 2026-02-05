@@ -20,16 +20,19 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 3. Configure the following settings in your Auth0 dashboard:
 
    **Allowed Callback URLs:**
+
    ```
    http://localhost:3000/auth/auth0/callback
    ```
 
    **Allowed Logout URLs:**
+
    ```
    http://localhost:3000/
    ```
 
    **Allowed Web Origins:**
+
    ```
    http://localhost:3000
    ```
@@ -37,6 +40,7 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 ### 2. Environment Variables
 
 1. Copy the environment template:
+
    ```bash
    cp .env.example .env
    ```
@@ -52,11 +56,13 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 ### 3. Installation
 
 1. Install dependencies:
+
    ```bash
    bundle install
    ```
 
 2. Start the server:
+
    ```bash
    rails server
    ```
@@ -73,12 +79,14 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 ## Technical Implementation
 
 - **Gems Used:**
+
   - `omniauth` - OAuth strategy framework
   - `omniauth-auth0` - Auth0 OAuth strategy
   - `omniauth-rails_csrf_protection` - CSRF protection for OAuth
   - `dotenv-rails` - Environment variable management
 
 - **Security Features:**
+
   - PKCE implementation through Auth0
   - Session-based authentication
   - CSRF protection
@@ -103,4 +111,5 @@ This is a minimal Rails application demonstrating OAuth 2.0 Authorization Code F
 * Deployment instructions
 
 * ...
+
 # rails-oauth-demo

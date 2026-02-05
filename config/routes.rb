@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   # Protected page
   get "protected", to: "protected#index"
-  
+
   # Authentication routes
   get "login", to: "auth#login"
   get "logout", to: "auth#logout"
