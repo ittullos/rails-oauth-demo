@@ -1,0 +1,15 @@
+<div class="protected-content">
+  <h1>🔒 Protected Page</h1>
+  <p>Congratulations! You have successfully accessed this protected page.</p>
+  
+  <div class="user-info">
+    <h3>Your Information:</h3>
+    <p>This content is only accessible to authenticated users.</p>
+    <!-- User details will be populated after Auth0 integration -->
+  </div>
+  
+  <div class="actions">
+    <%= link_to "← Back to Home", root_path, class: "btn btn-secondary" %>
+    <%= link_to "Logout", "#", class: "btn btn-danger" %>
+  </div>
+</div>

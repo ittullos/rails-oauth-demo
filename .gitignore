@@ -1,0 +1,169 @@
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
+
+# Dependencies
+/node_modules
+/bower_components
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+
+# Rails
+*.rbc
+capybara-*.html
+.rspec
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+# Rails temporary files
+/tmp/*
+!/tmp/cache
+!/tmp/pids
+!/tmp/sockets
+!/tmp/storage
+/tmp/cache/*
+!/tmp/cache/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+/tmp/sockets/*
+!/tmp/sockets/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Application logs
+/log/*
+!/log/.keep
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# Storage uploads
+/storage/*
+!/storage/.keep
+
+# Master key for decrypting credentials and more
+/config/master.key
+/config/credentials/*.key
+
+# Precompiled assets
+/public/assets
+/public/packs
+/public/packs-test
+
+# Yarn
+/yarn-error.log
+yarn-debug.log*
+
+# Node modules (if using Node.js for assets)
+node_modules/
+npm-debug.log*
+
+# Bundler
+/.bundle
+
+# Ignore Byebug command history
+.byebug_history
+
+# Ignore Spring files
+/spring/*.pid
+
+# Upload files in development
+/uploads
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# rbenv
+.rbenv-version
+
+# RVM
+.rvmrc
+
+# SimpleCov test coverage
+coverage/
+
+# ResultsTree
+ResultsTree.txt
+
+# Ignore pow environment settings
+.powenv
+
+# Ignore Redis dump file
+dump.rdb
+
+# Ignore secrets file
+config/secrets.yml
+
+# Ignore application configuration
+/config/application.yml
+
+# Ignore local environment files
+.env.development
+.env.test
+.env.production
+
+# Auth0 specific (we'll be using Auth0)
+.auth0/
+
+# Cache files
+.sass-cache/
+.cache
+
+# Temporary files
+*.tmp
+*.temp
+
+# Docker
+.dockerignore
+
+# Terraform (if using infrastructure as code)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Local ruby version managers
+.rbenv-version
+.ruby-version
+
+# Ignore database.yml with sensitive info
+/config/database.yml
+
+# Ignore compiled assets
+/public/assets/
+/public/packs/
+
+# Ignore importmap cache
+/app/assets/builds/
